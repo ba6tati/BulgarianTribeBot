@@ -1,0 +1,7 @@
+# Separate logs (messages, commands, etc)
+
+# Log Channel
+
+# Welcome message
+
+# Bye message

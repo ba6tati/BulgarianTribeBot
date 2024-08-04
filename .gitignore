@@ -1,6 +1,6 @@
 venv/
 .vscode/
-logs/
 __pycache__/
 
 *.env
+*.log

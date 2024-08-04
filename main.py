@@ -1,12 +1,16 @@
 import discord
-from discord import Client, Intents, Interaction, app_commands, Object, Embed, Member, User, Message, Role
 import os
 import sys
 import logging 
 import asyncio
+from discord import Client, Intents, Interaction, app_commands, Object, Embed, Member, User, Message, Role
+from dotenv import load_dotenv
+
 from datetime import datetime
 from defines import moderator_roles, success_color, error_color, success_emoji, error_emoji
 from exceptions import HasRole, NoRole
+        
+load_dotenv()
         
 print(f'Python Version: {sys.version}')    
     
@@ -31,7 +35,7 @@ tree = app_commands.CommandTree(client)
 #handler.setFormatter(formatter)
 #logger.addHandler(handler)
 
-guild = Object(id=os.environ.get('GUILD_ID'))
+guild = Object(id=os.getenv('GUILD_ID'))
 
 # logger.info('\n')
 
@@ -83,8 +87,8 @@ async def send_to_log(ctx_or_message, **kwargs): # replace with ctx
 async def on_ready():
     global log_channel
     
-    log_channel = await client.fetch_channel(os.environ.get('LOG_CHANNEL_ID'))
-    await tree.sync(guild=Object(id=os.environ.get('GUILD_ID')))
+    log_channel = await client.fetch_channel(os.getenv('LOG_CHANNEL_ID'))
+    await tree.sync(guild=Object(id=os.getenv('GUILD_ID')))
     print(f"Logged in as {client.user}")
     
 @client.event
@@ -173,6 +177,6 @@ async def error_handler(ctx, error):
     
 if __name__ == '__main__':
     embed = Embed(color=0xEC1600, description=':x: **You DON\'T have permission to use this command!**')
-    client.run(os.environ.get('BOT_TOKEN'))
+    client.run(os.getenv('BOT_TOKEN'))
     
 #* ctx = interaction

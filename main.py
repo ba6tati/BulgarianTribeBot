@@ -7,7 +7,7 @@ from discord import Client, Intents, Interaction, app_commands, Object, Embed, M
 from dotenv import load_dotenv
 
 from datetime import datetime
-from defines import moderator_roles, success_color, error_color, success_emoji, error_emoji
+from defines import moderator_roles, success_color, error_color, success_emoji, error_emoji, member_role
 from exceptions import HasRole, NoRole
         
 load_dotenv()
@@ -35,7 +35,7 @@ tree = app_commands.CommandTree(client)
 #handler.setFormatter(formatter)
 #logger.addHandler(handler)
 
-guild = Object(id=os.getenv('GUILD_ID'))
+# guild = Object(id=os.getenv('GUILD_ID'))
 
 # logger.info('\n')
 
@@ -86,10 +86,33 @@ async def send_to_log(ctx_or_message, **kwargs): # replace with ctx
 @client.event
 async def on_ready():
     global log_channel
+    global welcome_channel
+    global bye_channel
+    global guild
+    # global guild
+    
+    # guild = Object(id=os.getenv('GUILD_ID'))
     
     log_channel = await client.fetch_channel(os.getenv('LOG_CHANNEL_ID'))
-    await tree.sync(guild=Object(id=os.getenv('GUILD_ID')))
+    welcome_channel = await client.fetch_channel(os.getenv('WELCOME_CHANNEL_ID'))
+    bye_channel = await client.fetch_channel(os.getenv('BYE_CHANNEL_ID'))
+    guild = await client.fetch_guild(os.getenv('GUILD_ID'))
+    await tree.sync()
     print(f"Logged in as {client.user}")
+    
+@client.event
+async def on_member_join(member):
+    embed = Embed(title='Добре дошъл!', description=f'{member.mention} се присъедини към **{guild.name}**!', color=success_color)
+    
+    await member.add_roles(discord.utils.get(guild.roles, name=member_role))
+    
+    await welcome_channel.send(embed=embed)
+    
+@client.event
+async def on_member_remove(member):
+    embed = Embed(title='Чао!', description=f'{member.mention} излезе от **{guild.name}**!', color=error_color)
+    
+    await bye_channel.send(embed=embed)
     
 @client.event
 async def on_message(message):
@@ -105,7 +128,7 @@ async def on_message_edit(before, after):
 async def on_message_delete(message):
     await send_to_log(message, deleted=True)
         
-@tree.command(name='ban', description='Bans the specified user.', guild=guild)
+@tree.command(name='ban', description='Bans the specified user.')
 @app_commands.checks.has_any_role(*moderator_roles)
 async def ban(ctx, user: User, reason: str):
     # logger.debug(f'[COMMAND] #{ctx.channel.name} {ctx.user}: ban')
@@ -114,7 +137,7 @@ async def ban(ctx, user: User, reason: str):
     await ctx.response.send_message(embed=embed, ephemeral=True)
     await send_to_log(ctx, target=user)
     
-@tree.command(name='unban', description='Unbans the specified user.', guild=guild)
+@tree.command(name='unban', description='Unbans the specified user.')
 @app_commands.checks.has_any_role(*moderator_roles)
 async def unban(ctx, user: User, reason: str):
     await ctx.guild.unban(user=await client.fetch_user(user.id), reason=reason)
@@ -122,7 +145,7 @@ async def unban(ctx, user: User, reason: str):
     await ctx.response.send_message(embed=embed, ephemeral=True)
     await send_to_log(ctx, target=user)
     
-@tree.command(name='kick', description='Kicks the specified user.', guild=guild)
+@tree.command(name='kick', description='Kicks the specified user.')
 @app_commands.checks.has_any_role(*moderator_roles)
 async def kick(ctx, user: Member, reason: str=None):
     await user.kick(reason=reason)
@@ -130,7 +153,7 @@ async def kick(ctx, user: Member, reason: str=None):
     await ctx.response.send_message(embed=embed, ephemeral=True)
     await send_to_log(ctx, target=user)
     
-@tree.command(name='add_role', description='Adds specified role to the specified user.', guild=guild)
+@tree.command(name='add_role', description='Adds specified role to the specified user.')
 @app_commands.checks.has_any_role(*moderator_roles)
 async def add_role(ctx, user: Member, role: Role):
     if role in user.roles:
@@ -143,7 +166,7 @@ async def add_role(ctx, user: Member, role: Role):
     
 
     
-@tree.command(name='remove_role', description='Removes specified role from the specified user.', guild=guild)
+@tree.command(name='remove_role', description='Removes specified role from the specified user.')
 @app_commands.checks.has_any_role(*moderator_roles)
 async def remove_role(ctx, user: Member, role: Role):
     if role not in user.roles:

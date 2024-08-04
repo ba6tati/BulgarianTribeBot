@@ -103,10 +103,9 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     embed = Embed(title='Добре дошъл!', description=f'{member.mention} се присъедини към **{guild.name}**!', color=success_color)
+    await welcome_channel.send(embed=embed)
     
     await member.add_roles(discord.utils.get(guild.roles, name=member_role))
-    
-    await welcome_channel.send(embed=embed)
     
 @client.event
 async def on_member_remove(member):
@@ -118,7 +117,9 @@ async def on_member_remove(member):
 async def on_message(message):
     if message.author == client.user:
         return
-    await send_to_log(message)
+    
+    if message.guild == guild:
+        await send_to_log(message)
     
 @client.event
 async def on_message_edit(before, after):

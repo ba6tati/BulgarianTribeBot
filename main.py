@@ -1,12 +1,15 @@
 import discord
 from discord import Client, Intents, Interaction, app_commands, Object, Embed, Member, User, Message, Role
 import os
+import sys
 import logging 
 import asyncio
 from datetime import datetime
 from defines import moderator_roles, success_color, error_color, success_emoji, error_emoji
 from exceptions import HasRole, NoRole
         
+print(f'Python Version: {sys.version}')    
+    
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -60,15 +63,15 @@ async def send_to_log(ctx_or_message, **kwargs): # replace with ctx
         
         match ctx.command.name:
             case 'add_role':
-                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} added {kwargs.pop('role').mention} role to {kwargs.pop('target').mention}'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} added {kwargs.pop("role").mention} role to {kwargs.pop("target").mention}'
             case 'ban':
-                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} banned {kwargs.pop('target').mention}.'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} banned {kwargs.pop("target").mention}.'
             case 'unban':
-                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} unbanned {kwargs.pop('target').mention}.'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} unbanned {kwargs.pop("target").mention}.'
             case 'kick':
-                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} kicked {kwargs.pop('target').mention}.'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} kicked {kwargs.pop("target").mention}.'
             case 'remove_role':
-                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} removed {kwargs.pop('role').mention} role to {kwargs.pop('target').mention}'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} removed {kwargs.pop("role").mention} role to {kwargs.pop("target").mention}'
             case _:
                 description = f':{emoji}: {ctx.user.mention} used "{ctx.command.name}" command {"unsuccessfully" if error else "successfully"} in {ctx.channel.mention}'
         

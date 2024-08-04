@@ -18,7 +18,7 @@ client = Client(intents=intents)
 
 tree = app_commands.CommandTree(client)
     
-log_file = f'logs/{datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.log'
+log_file = f'logs/{datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log'
 
 #with open(log_file, 'w+') as f:
 #    pass

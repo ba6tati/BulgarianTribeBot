@@ -10,8 +10,8 @@ from exceptions import HasRole, NoRole
         
 print(f'Python Version: {sys.version}')    
     
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+#logger = logging.getLogger()
+#logger.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s', '%Y-%m-%d %H:%M:%S')
         
@@ -21,21 +21,21 @@ client = Client(intents=intents)
 
 tree = app_commands.CommandTree(client)
     
-log_file = f'logs/{datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log'
+#log_file = f'logs/{datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log'
 
 #with open(log_file, 'w+') as f:
 #    pass
     
-handler = logging.FileHandler(filename=log_file, encoding='utf-8', mode='w+')
-handler.setLevel(logging.DEBUG)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+#handler = logging.FileHandler(filename=log_file, encoding='utf-8', mode='w+')
+#handler.setLevel(logging.DEBUG)
+#handler.setFormatter(formatter)
+#logger.addHandler(handler)
 
 guild = Object(id=os.environ.get('GUILD_ID'))
 
 # logger.info('\n')
 
-logger.debug('Application started')
+#logger.debug('Application started')
 
 async def send_to_log(ctx_or_message, **kwargs): # replace with ctx
     
@@ -155,7 +155,7 @@ async def remove_role(ctx, user: Member, role: Role):
 @add_role.error
 @remove_role.error 
 async def error_handler(ctx, error):
-    logger.error(error)
+    #logger.error(error)
     
     if isinstance(error, app_commands.MissingAnyRole):
         embed = Embed(color=error_color, description=f':{error_emoji}: **You DON\'T have permission to use this command!**')
@@ -173,6 +173,6 @@ async def error_handler(ctx, error):
     
 if __name__ == '__main__':
     embed = Embed(color=0xEC1600, description=':x: **You DON\'T have permission to use this command!**')
-    client.run(os.environ.get('BOT_TOKEN'), log_handler=handler)
+    client.run(os.environ.get('BOT_TOKEN'))
     
 #* ctx = interaction

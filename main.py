@@ -60,17 +60,17 @@ async def send_to_log(ctx_or_message, **kwargs): # replace with ctx
         
         match ctx.command.name:
             case 'add_role':
-                description = f':{emoji}: {ctx.user.mention} {'unsuccessfully' if error else 'successfully'} added {kwargs.pop('role').mention} role to {kwargs.pop('target').mention}'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} added {kwargs.pop('role').mention} role to {kwargs.pop('target').mention}'
             case 'ban':
-                description = f':{emoji}: {ctx.user.mention} {'unsuccessfully' if error else 'successfully'} banned {kwargs.pop('target').mention}.'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} banned {kwargs.pop('target').mention}.'
             case 'unban':
-                description = f':{emoji}: {ctx.user.mention} {'unsuccessfully' if error else 'successfully'} unbanned {kwargs.pop('target').mention}.'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} unbanned {kwargs.pop('target').mention}.'
             case 'kick':
-                description = f':{emoji}: {ctx.user.mention} {'unsuccessfully' if error else 'successfully'} kicked {kwargs.pop('target').mention}.'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} kicked {kwargs.pop('target').mention}.'
             case 'remove_role':
-                description = f':{emoji}: {ctx.user.mention} {'unsuccessfully' if error else 'successfully'} removed {kwargs.pop('role').mention} role to {kwargs.pop('target').mention}'
+                description = f':{emoji}: {ctx.user.mention} {"unsuccessfully" if error else "successfully"} removed {kwargs.pop('role').mention} role to {kwargs.pop('target').mention}'
             case _:
-                description = f':{emoji}: {ctx.user.mention} used "{ctx.command.name}" command {'unsuccessfully' if error else 'successfully'} in {ctx.channel.mention}'
+                description = f':{emoji}: {ctx.user.mention} used "{ctx.command.name}" command {"unsuccessfully" if error else "successfully"} in {ctx.channel.mention}'
         
     embed = Embed(title=title, description=description, color=color)
     
